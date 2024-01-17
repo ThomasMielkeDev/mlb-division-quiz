@@ -50,5 +50,22 @@ btnStartEl.addEventListener('click', function() {
 
     for(let i = 0; i < teamsArray.length; i++) {
         teamsArray[i].classList.add('choice');
+        teamsArray[i].addEventListener('click', checkAnswer);
     }
 })
+
+function checkAnswer() {
+    let answer = this.id;
+    
+    if(currentArray.includes(answer)){
+        this.classList.add('correct');
+        this.classList.remove('choice');
+        score++;
+        if (score === 5) {
+            informationEl.textContent = `You got all of the teams!`;
+        }
+    } else {
+        this.classList.add('wrong');
+        this.classList.remove('choice');
+    }
+}
