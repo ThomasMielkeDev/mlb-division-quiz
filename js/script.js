@@ -11,6 +11,7 @@ const NLWest = ['diamondbacks', 'dodgers', 'giants', 'padres', 'rockies'];
 const btnStartEl = document.getElementById('start');
 const informationEl = document.getElementById('information');
 const teamsArray = document.querySelectorAll('.team-option');
+const btnNewQuizEl = document.getElementById('new-quiz');
 
 // Variables
 let randomNumber;
@@ -19,53 +20,74 @@ let score = 0;
 const prompt = 'Can you guess the teams from the: ';
 
 // Start Quiz
-btnStartEl.addEventListener('click', function() {
+btnStartEl.addEventListener('click', startQuiz);
+btnStartEl.addEventListener('click', addChoice);
+btnNewQuizEl.addEventListener('click', newQuiz);
+
+function startQuiz() {
     randomNumber = Math.floor(Math.random() *6) +1;
     
     if (randomNumber === 1) {
         currentArray = ALEast;
         informationEl.textContent = `${prompt}AL East`;
-        console.log(currentArray);
     } else if (randomNumber === 2) {
         currentArray = ALCentral;
         informationEl.textContent = `${prompt}AL Central`;
-        console.log(currentArray);
     } else if (randomNumber === 3) {
         currentArray = ALWest;
         informationEl.textContent = `${prompt}AL West`;
-        console.log(currentArray);
     } else if (randomNumber === 4) {
         currentArray = NLEast;
         informationEl.textContent = `${prompt}NL East`;
-        console.log(currentArray);
     } else if (randomNumber === 5) {
         currentArray = NLCentral;
         informationEl.textContent = `${prompt}NL Central`;
-        console.log(currentArray);
     } else if (randomNumber === 6) {
         currentArray = NLWest;
         informationEl.textContent = `${prompt}NL West`;
-        console.log(currentArray);
     }
 
-    for(let i = 0; i < teamsArray.length; i++) {
-        teamsArray[i].classList.add('choice');
-        teamsArray[i].addEventListener('click', checkAnswer);
-    }
-})
+    btnNewQuizEl.style.display = 'block';
+}
 
 function checkAnswer() {
     let answer = this.id;
-    
-    if(currentArray.includes(answer)){
-        this.classList.add('correct');
-        this.classList.remove('choice');
-        score++;
-        if (score === 5) {
+
+    if(currentArray.includes(answer) && this.classList.contains('choice')){
+            this.classList.add('correct');
+            this.classList.remove('choice');
+            score++;
+
+            if (score === 5) {
             informationEl.textContent = `You got all of the teams!`;
-        }
-    } else {
+            for(let i = 0; i < teamsArray.length; i++) {
+                teamsArray[i].removeEventListener('click', checkAnswer);
+                teamsArray[i].classList.remove('choice');
+            }
+            }
+    } else if (!currentArray.includes(answer)){
         this.classList.add('wrong');
         this.classList.remove('choice');
+    }
+}
+
+function newQuiz() {
+    startQuiz();
+    score = 0;
+
+    for(let i = 0; i < teamsArray.length; i++) {
+        if (!teamsArray[i].classList.contains('choice')){
+            teamsArray[i].classList.remove('wrong');
+            teamsArray[i].classList.remove('correct');
+            teamsArray[i].classList.add('choice');
+        }
+        teamsArray[i].addEventListener('click', checkAnswer);
+    }
+}
+
+function addChoice() {
+    for(let i = 0; i < teamsArray.length; i++) {
+        teamsArray[i].classList.add('choice');
+        teamsArray[i].addEventListener('click', checkAnswer);
     }
 }
