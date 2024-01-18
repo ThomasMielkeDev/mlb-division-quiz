@@ -17,7 +17,7 @@ const btnNewQuizEl = document.getElementById('new-quiz');
 let randomNumber;
 let currentArray;
 let score = 0;
-const prompt = 'Can you guess the teams from the: ';
+const prompt = 'Can you pick the teams from the: ';
 
 // Start Quiz
 btnStartEl.addEventListener('click', startQuiz);
@@ -59,7 +59,7 @@ function checkAnswer() {
             score++;
 
             if (score === 5) {
-            informationEl.textContent = `You got all of the teams!`;
+            informationEl.textContent = `You got all 5 teams! Start new quiz!`;
             for(let i = 0; i < teamsArray.length; i++) {
                 teamsArray[i].removeEventListener('click', checkAnswer);
                 teamsArray[i].classList.remove('choice');
